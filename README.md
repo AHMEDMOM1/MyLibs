@@ -35,16 +35,15 @@ To use `DateLib` in your project, simply include the `DateLib.h` header file:
 
 int main() {
     // Example: Create a date
-    DateLib::Date today(25, 5, 2025);
-    std::cout << "Today is: " << today << std::endl;
+   DataLib::Date today({ 25, 5, 2025 });
+   DataLib::print_date(today);
 
     // Example: Add days
-    DateLib::Date futureDate = today.add_days(100);
-    std::cout << "100 days from today: " << futureDate << std::endl;
-
-    // Example: Display a calendar
-    DateLib::Date::display_calendar(futureDate.get_month(), futureDate.get_year());
-
+   DataLib::Date futureDate = DataLib::add_days_to_date(today, 100);
+   DataLib::print_date(futureDate);
+   
+   // Example: Display a calendar
+   DataLib::demonstrate_calendar_display();
     return 0;
 }
 ```
