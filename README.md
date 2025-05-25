@@ -1,7 +1,3 @@
-It's fantastic that you're building a library for your date utilities\! A well-crafted `README.md` file is crucial for any GitHub repository, acting as the front door to your project. It should be inviting, informative, and easy to navigate.
-
-Here's a draft `README.md` for your `DateLib`, designed to be flexible and extensible for future additions:
-
 -----
 
 # 🚀 My C++ Utility Libraries
