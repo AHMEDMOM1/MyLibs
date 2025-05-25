@@ -1,3 +1,23 @@
+
+
+# CPP Utility Libraries Collection
+
+![C++ Utilities Banner](https://img.shields.io/badge/C%2B%2B-Utility%20Libraries-blue?style=for-the-badge&logo=c%2B%2B)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![C++17](https://img.shields.io/badge/C%2B%2B-17-blue)](https://en.cppreference.com/w/cpp/17)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/YourUsername/cpp-utility-libraries/graphs/commit-activity)
+[![Documentation](https://img.shields.io/badge/Documentation-Doxygen-blue.svg)](https://YourUsername.github.io/cpp-utility-libraries)
+
+A collection of high-quality, modern C++ utility libraries designed to simplify common programming tasks with elegant, efficient, and well-documented implementations.
+
+## 📚 Libraries Overview
+
+| Library | Description | Status |
+| ------- | ----------- | ------ |
+| [DateLib](#datelib) | Comprehensive date and calendar manipulation | ✅ Stable |
+| [Future Libraries](#roadmap) | Planned additions to the collection | 🔄 Planned |
+
 -----
 
 # 🚀 My C++ Utility Libraries
