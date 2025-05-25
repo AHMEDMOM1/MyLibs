@@ -1,3 +1,13 @@
+C++ Utilities Banner
+License: MIT C++17 Maintenance Documentation
+
+A collection of high-quality, modern C++ utility libraries designed to simplify common programming tasks with elegant, efficient, and well-documented implementations.
+
+📚 Libraries Overview
+Library	Description	Status
+DateLib	Comprehensive date and calendar manipulation	✅ Stable
+Future Libraries	Planned additions to the collection	🔄 Planned
+
 It's fantastic that you're building a library for your date utilities\! A well-crafted `README.md` file is crucial for any GitHub repository, acting as the front door to your project. It should be inviting, informative, and easy to navigate.
 
 Here's a draft `README.md` for your `DateLib`, designed to be flexible and extensible for future additions:
