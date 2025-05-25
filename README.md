@@ -1,6 +1,6 @@
 It's fantastic that you're building a library for your date utilities\! A well-crafted `README.md` file is crucial for any GitHub repository, acting as the front door to your project. It should be inviting, informative, and easy to navigate.
 
-Here's a draft `README.md` for your `MyDateLibrary`, designed to be flexible and extensible for future additions:
+Here's a draft `README.md` for your `DateLib`, designed to be flexible and extensible for future additions:
 
 -----
 
@@ -10,7 +10,7 @@ Welcome to the home of my personal collection of C++ utility libraries\! This re
 
 -----
 
-## 📅 MyDateLibrary: Mastering Dates and Times
+## 📅 DateLibrary: Mastering Dates and Times
 
 The **MyDateLibrary** is your go-to solution for comprehensive date management in C++. It provides a powerful and intuitive `Date` class that encapsulates all the essential functionalities for working with dates, from basic properties to complex calculations.
 
@@ -28,28 +28,28 @@ The **MyDateLibrary** is your go-to solution for comprehensive date management i
 
 ### 🛠️ Getting Started
 
-To use `MyDateLibrary` in your project, simply include the `MyDateLibrary.h` header file:
+To use `DateLib` in your project, simply include the `DateLib.h` header file:
 
 ```cpp
-#include "MyDateLibrary.h"
+#include "DateLib.h"
 
 int main() {
     // Example: Create a date
-    MyDateLibrary::Date today(25, 5, 2025);
+    DateLib::Date today(25, 5, 2025);
     std::cout << "Today is: " << today << std::endl;
 
     // Example: Add days
-    MyDateLibrary::Date futureDate = today.add_days(100);
+    DateLib::Date futureDate = today.add_days(100);
     std::cout << "100 days from today: " << futureDate << std::endl;
 
     // Example: Display a calendar
-    MyDateLibrary::Date::display_calendar(futureDate.get_month(), futureDate.get_year());
+    DateLib::Date::display_calendar(futureDate.get_month(), futureDate.get_year());
 
     return 0;
 }
 ```
 
-For more detailed examples and demonstrations of how to use various functionalities, refer to the comments within the `MyDateLibrary.h` file itself, or explore the example usage in `main.cpp` (if you create one for demonstrations).
+For more detailed examples and demonstrations of how to use various functionalities, refer to the comments within the `DateLib.h` file itself, or explore the example usage in `main.cpp` (if you create one for demonstrations).
 
 ### 🚀 Future Enhancements (Flexible Section)
 
