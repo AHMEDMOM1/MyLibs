@@ -172,6 +172,26 @@ namespace DataLib {
 		return date_info;
 	}
 
+	// Calculates the number of non-weekend days between two dates.
+	// The calculation is inclusive of the start_date and exclusive of the end_date.
+	short calculate_vacation_days(Date start_date, Date end_date) {
+
+		short work_days_count{};
+		while (is_first_date_earlier(start_date, end_date)) {
+			if (!is_weekend(start_date)) {
+				work_days_count++;
+			}
+			start_date = add_days_to_date(start_date, 1);
+		}
+		return work_days_count;
+	}
+
+	Date get_current_date() {
+		time_t t = time(0);
+		tm* gt = localtime(&t);
+	
+		return { (short)gt->tm_mday,(short)(gt->tm_mon + 1), (short)(gt->tm_year + 1900) };
+	}
 	// Converts a total number of days (relative to an initial year and day) into a Date structure.
 	Date get_date_from_days_total(Date date_info) {
 		date_info.year = get_year_from_days(date_info);
