@@ -16,11 +16,6 @@ namespace DataLib {
 		short year{};
 	};
 
-	enum DateComparisonState {
-		Inclusive, 
-		Exclusive  
-	};
-
 	// Calculates the day of the week (0 = Sunday, 6 = Saturday) using Zeller's congruence.
 	short calculate_day_of_week(Date date_info) { 
 		int a = (14 - date_info.month) / 12;
@@ -76,12 +71,9 @@ namespace DataLib {
 	short get_days_in_month(short month, short year) {
 		if (month == 2)
 			return is_leap_year(year) ? 29 : 28;
-		else if (month <= 7) // Months 1-7
-			return (month % 2 == 0) ? 30 : 31;
-		else // Months 8-12
-			return (month % 2 == 0) ? 31 : 30;
+		if(month <= 7) (month % 2 == 0) ? return 30 : return 31;
+		if(month > 7 ) (month % 2 == 0) ? return 31 : return 30;
 	}
-
 	// Calculates the total number of days from the beginning of the year to the given date's month and day.
 	short calculate_days_from_year_start(Date date_info) { 
 		short total_days = date_info.day;
@@ -137,23 +129,16 @@ namespace DataLib {
 	}
 
 	// Calculates the sum of days between two dates.
-	int get_total_days_between_dates(Date start_date, Date end_date, DateComparisonState state = Exclusive) { 
-		int total_days_sum = 0;
-		// Sum days for full years between start_date and end_date
-		for (short y = start_date.year; y < end_date.year; y++) {
-			for (short m = start_date.month; m <= 12; m++) {
-				total_days_sum += get_days_in_month(m, y);
-			}
-			start_date.month = 1; // Reset month for the next iteration of years
-		}
-		// Sum days for months within the end_date's year up to the end_date's month
-		for (short m = start_date.month; m < end_date.month; m++) {
-			total_days_sum += get_days_in_month(m, end_date.year);
-		}
-		total_days_sum -= start_date.day; // Subtract days from the start of the start_date's month
-		total_days_sum += end_date.day;   // Add days up to the end_date's day
 
-		return (state == Exclusive) ? total_days_sum : total_days_sum - 1; // Adjust based on inclusive/exclusive
+	int get_total_days_between_dates(Date start_date, Date end_date, bool last_day = false) { 
+		int count_days{};
+		if (!is_first_date_earlier(start_date, end_date))return -1;
+		
+		while (is_first_date_earlier(start_date, end_date)) {
+			count_days++;
+			start_date = add_days_to_date(start_date, 1);
+		}
+		return last_day ? count_days + 1: count_days; // Adjust based on inclusive/exclusive
 	}
 
 	// Adds a specified number of days to a date.
