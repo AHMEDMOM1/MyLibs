@@ -1,4 +1,5 @@
 #pragma once
+#pragma warning(disable : 4996)
 
 #include <iostream>
 #include <iomanip>
@@ -171,11 +172,18 @@ namespace DataLib {
 		return work_days_count;
 	}
 
-	Date get_current_date() {
-		time_t t = time(0);
-		tm* gt = localtime(&t);
-	
-		return { (short)gt->tm_mday,(short)(gt->tm_mon + 1), (short)(gt->tm_year + 1900) };
+	// Gets the current system date as a Date object.
+	 Date get_current_date() {
+		time_t t = time(0); // Get current calendar time
+		tm* local_time_info = localtime(&t); 
+
+		// tm_mon is 0-11, so add 1 for actual month number.
+		// tm_year is years since 1900, so add 1900 for actual year.
+		return{
+			(short)local_time_info->tm_mday,
+			(short)(local_time_info->tm_mon + 1),
+			(short)(local_time_info->tm_year + 1900)
+		};
 	}
 	// Converts a total number of days (relative to an initial year and day) into a Date structure.
 	Date get_date_from_days_total(Date date_info) {
