@@ -17,6 +17,25 @@ namespace DateLib {
 		short year{};
 	};
 
+	struct Period {
+		Date start_date{};
+		Date end_date{};
+	};
+	
+	// Determines if two time periods have any overlapping dates.
+	bool check_if_there_overlap(const Period& first_period, const Period& second_period) {
+	
+		if (
+			is_first_date_earlier(first_period.end_date, second_period.start_date)
+			||
+			is_first_date_earlier(second_period.end_date, first_period.start_date)
+			) {
+			return false;
+		}
+		
+		return true;
+	}
+
 	// Calculates the day of the week (0 = Sunday, 6 = Saturday) using Zeller's congruence.
 	short calculate_day_of_week(Date date_info) {
 		int a = (14 - date_info.month) / 12;
