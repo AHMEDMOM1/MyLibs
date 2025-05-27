@@ -21,20 +21,8 @@ namespace DateLib {
 		Date start_date{};
 		Date end_date{};
 	};
-	
-	// Determines if two time periods have any overlapping dates.
-	bool check_if_there_overlap(const Period& first_period, const Period& second_period) {
-	
-		if (
-			is_first_date_earlier(first_period.end_date, second_period.start_date)
-			||
-			is_first_date_earlier(second_period.end_date, first_period.start_date)
-			) {
-			return false;
-		}
-		
-		return true;
-	}
+
+	bool is_leap_year(short year);
 
 	// Calculates the day of the week (0 = Sunday, 6 = Saturday) using Zeller's congruence.
 	short calculate_day_of_week(Date date_info) {
@@ -56,6 +44,14 @@ namespace DateLib {
 		return num;
 	}
 
+	// Gets the number of days in a specific month for a given year.
+	short get_days_in_month(short month, short year) {
+		if (month == 2)
+			return is_leap_year(year) ? 29 : 28;
+		if (month <= 7) return (month % 2 == 0) ? 30 : 31;
+		if (month > 7) return  (month % 2 == 0) ? 31 : 30;
+	}
+
 	// Fills a Date structure by prompting the user for day, month, and/or year.
 	Date get_date_information(bool prompt_day = false, bool prompt_month = false, bool prompt_year = false) {
 		Date date_data{};
@@ -65,13 +61,29 @@ namespace DateLib {
 		return date_data;
 	}
 
+	// Adds a specified number of days to a date.
+	Date add_days_to_date(Date date_info, short days_to_add) {
+		for (int i = 0; i < days_to_add; i++) {
+			date_info.day++;
+			if (date_info.day > get_days_in_month(date_info.month, date_info.year)) {
+				date_info.month++;
+				if (date_info.month > 12) {
+					date_info.year++;
+					date_info.month = 1;
+				}
+				date_info.day = 1;
+			}
+		}
+		return date_info;
+	}
+
 	// Checks if a given year is a leap year.
 	bool is_leap_year(short year) {
 		return (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0);
 	}
 
 	// Compares two dates and returns true if the first date is earlier than the second.
-	bool is_first_date_earlier(Date date1, Date date2) {
+	bool check_if_first_date_earlier(Date date1, Date date2) {
 		if (date1.year != date2.year) {
 			return date1.year < date2.year;
 		}
@@ -81,19 +93,45 @@ namespace DateLib {
 		return date1.day < date2.day;
 	}
 
+	// Determines if two time periods have any overlapping dates.
+	bool check_if_there_overlap(const Period& first_period, const Period& second_period) {
+
+		if (
+			check_if_first_date_earlier(first_period.end_date, second_period.start_date)
+			||
+			check_if_first_date_earlier(second_period.end_date, first_period.start_date)
+			) {
+			return false;
+		}
+
+		return true;
+	}
+
+	//This function checks if two dates represent the exact same calendar date
+	bool are_date_equal(const Date& _first, const Date& _second) {
+		return (_first.year == _second.year) && (_first.month == _second.month) && (_first.day == _second.day);
+	}
+
+	// This function verifies whether the given date lies within the period's date range
+	bool is_date_with_in_period(Period period,Date date) {
+
+		while (check_if_first_date_earlier(period.start_date, period.end_date)) {
+			if (are_date_equal(date, period.start_date))
+				return true;
+			period.start_date = add_days_to_date(period.start_date, 1);
+		}
+
+		if (are_date_equal(date, period.end_date)) return true;
+
+		return false;
+	}
+
 	// Checks if a given date falls on a weekend (Friday or Saturday in your current logic).
-	bool is_weekend(Date date_info) {
+	bool is_weekend(const Date& date_info) {
 		short day_of_week = calculate_day_of_week(date_info);
 		return day_of_week == 5 || day_of_week == 6;
 	}
 
-	// Gets the number of days in a specific month for a given year.
-	short get_days_in_month(short month, short year) {
-		if (month == 2)
-			return is_leap_year(year) ? 29 : 28;
-		if (month <= 7) return (month % 2 == 0) ?  30 :  31;
-		if (month > 7) return  (month % 2 == 0) ?  31 :  30;
-	}
 	// Calculates the total number of days from the beginning of the year to the given date's month and day.
 	short calculate_days_from_year_start(Date date_info) {
 		short total_days = date_info.day;
@@ -147,42 +185,53 @@ namespace DateLib {
 		}
 		return date_data;
 	}
-	// Adds a specified number of days to a date.
-	Date add_days_to_date(Date date_info, short days_to_add) {
-		for (int i = 0; i < days_to_add; i++) {
-			date_info.day++;
-			if (date_info.day > get_days_in_month(date_info.month, date_info.year)) {
-				date_info.month++;
-				if (date_info.month > 12) {
-					date_info.year++;
-					date_info.month = 1;
-				}
-				date_info.day = 1;
-			}
-		}
-		return date_info;
-	}
-
+	
 	// Calculates the sum of days between two dates.
 
 	int get_total_days_between_dates(Date start_date, Date end_date, bool last_day = false) {
 		int count_days{};
-		if (!is_first_date_earlier(start_date, end_date))return -1;
+		if (!check_if_first_date_earlier(start_date, end_date))return -1;
 
-		while (is_first_date_earlier(start_date, end_date)) {
+		while (check_if_first_date_earlier(start_date, end_date)) {
 			count_days++;
 			start_date = add_days_to_date(start_date, 1);
 		}
 		return last_day ? count_days + 1 : count_days; // Adjust based on inclusive/exclusive
 	}
 
+	// This function calculate the number of overlapping days between two date periods
+	int calc_overlap_days(bool is_overlap, DateLib::Period first_period, DateLib::Period second_period) {
+		int overlap_days{};
+		const int  first_period_length{ DateLib::get_total_days_between_dates(first_period.start_date,  first_period.end_date) };
+		const int second_period_length{ DateLib::get_total_days_between_dates(second_period.start_date, second_period.end_date) };
+		if (!is_overlap) return overlap_days;
+
+		// Always iterate through the shorter period to minimize iterations
+		if (first_period_length > second_period_length) {
+			swap(first_period, second_period);
+		}
+
+		while (DateLib::check_if_first_date_earlier(first_period.start_date, first_period.end_date)) {
+			if (is_date_with_in_period(second_period, first_period.start_date)) {
+				overlap_days++;
+			}
+			first_period.start_date = DateLib::add_days_to_date(first_period.start_date, 1);
+		}
+
+		// Final check for the end date (inclusive)
+		if (is_date_with_in_period(second_period, first_period.end_date)) {
+			overlap_days++;
+		}
+
+		return overlap_days;
+	}
 
 	// Calculates the number of non-weekend days between two dates.
 	// The calculation is inclusive of the start_date and exclusive of the end_date.
 	short calculate_vacation_days(Date start_date, Date end_date) {
 
 		short work_days_count{};
-		while (is_first_date_earlier(start_date, end_date)) {
+		while (check_if_first_date_earlier(start_date, end_date)) {
 			if (!is_weekend(start_date)) {
 				work_days_count++;
 			}
@@ -301,6 +350,7 @@ namespace DateLib {
 				std::cout << std::setw(5) << ' ';
 			}
 		}
+
 		std::cout << std::endl;
 
 		// Calculate remaining rows
